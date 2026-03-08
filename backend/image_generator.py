@@ -19,6 +19,13 @@ IMAGE_MODEL = "gemini-2.0-flash-exp-image-generation"
 # ─── SVG puppet templates for fast mode ─────────────────────────────────
 # These are rich, colorful SVG illustrations that render instantly
 
+import re as _re
+
+def _clean_svg(svg: str) -> str:
+    """Strip HTML comments from SVG to ensure data URI compatibility."""
+    return _re.sub(r'<!--.*?-->', '', svg, flags=_re.DOTALL)
+
+
 def _svg_puppet(el_id: str, description: str) -> str:
     """Generate a rich SVG puppet based on keywords in the description."""
     desc = (description or el_id).lower()
@@ -29,9 +36,7 @@ def _svg_puppet(el_id: str, description: str) -> str:
         body_color = "#FF69B4" if "pink" in desc else "#4CAF50"
         accent = "#FFD700"
         return f'''<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
-  <defs><filter id="s{h[:4]}"><feGaussianBlur stdDeviation="2"/></filter></defs>
-  <!-- Body -->
-  <ellipse cx="200" cy="230" rx="100" ry="80" fill="{body_color}" filter="url(#s{h[:4]})"/>
+  <ellipse cx="200" cy="230" rx="100" ry="80" fill="{body_color}"/>
   <!-- Belly -->
   <ellipse cx="200" cy="250" rx="65" ry="55" fill="{body_color}" opacity="0.6"/>
   <ellipse cx="200" cy="250" rx="55" ry="45" fill="#FFE4E1"/>
@@ -58,7 +63,7 @@ def _svg_puppet(el_id: str, description: str) -> str:
   <path d="M175 95 L165 55 L185 85Z" fill="{accent}"/>
   <path d="M225 95 L235 55 L215 85Z" fill="{accent}"/>
   <!-- Tail -->
-  <path d="M290 260 Q340 280 350 240 Q360 220 340 230" fill="{body_color}" stroke="{body_color}" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M290 260 Q340 280 350 240 Q360 220 340 230" stroke="{body_color}" stroke-width="8" stroke-linecap="round" fill="none"/>
   <!-- Feet -->
   <ellipse cx="155" cy="310" rx="25" ry="12" fill="{body_color}"/>
   <ellipse cx="245" cy="310" rx="25" ry="12" fill="{body_color}"/>
@@ -305,6 +310,7 @@ class ImageGenerator:
                         svg = _svg_background(el_id, desc)
                     else:
                         svg = _svg_puppet(el_id, desc)
+                    svg = _clean_svg(svg)
                     b64 = base64.b64encode(svg.encode()).decode()
                     el["image"] = f"data:image/svg+xml;base64,{b64}"
                     self.cache[el_id] = el["image"]

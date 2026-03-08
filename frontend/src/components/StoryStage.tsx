@@ -85,12 +85,23 @@ const StoryStage: React.FC<Props> = ({ scene }) => {
             position: 'absolute',
             inset: 0,
             zIndex: 0,
-            backgroundImage: el.image ? `url(${el.image})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            transition: 'background-image 1.5s ease',
+            overflow: 'hidden',
           }}
-        />
+        >
+          {el.image && (
+            <img
+              src={el.image}
+              alt=""
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          )}
+        </div>
       ))}
 
       {/* Puppet elements — positioned on stage */}
