@@ -1,0 +1,113 @@
+/* === Dream Weaver Puppet Animations === */
+
+/* 1. idle_bob — gentle vertical float */
+@keyframes idle_bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(var(--intensity, -10px)); }
+}
+
+/* 2. oscillate_y — rotation around pivot (jaw, wings, nodding) */
+@keyframes oscillate_y {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(calc(var(--intensity-deg, 15deg))); }
+}
+
+/* 3. oscillate_x — horizontal rocking */
+@keyframes oscillate_x {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(var(--intensity-x, 10px)); }
+}
+
+/* 4. pulse_scale — scale up and down */
+@keyframes pulse_scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(var(--intensity-scale, 1.1)); }
+}
+
+/* 5. translate_x — slide horizontally */
+@keyframes translate_x {
+  0% { transform: translateX(var(--tx-start, -30px)); }
+  100% { transform: translateX(var(--tx-end, 30px)); }
+}
+
+/* 6. translate_y — slide vertically */
+@keyframes translate_y {
+  0% { transform: translateY(var(--ty-start, -20px)); }
+  100% { transform: translateY(var(--ty-end, 20px)); }
+}
+
+/* 7. rotate_oscillate — gentle rotation back and forth */
+@keyframes rotate_oscillate {
+  0%, 100% { transform: rotate(calc(var(--rot-range, 8deg) * -1)); }
+  50% { transform: rotate(var(--rot-range, 8deg)); }
+}
+
+/* 8. float — slow random-feeling drift */
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(5px, -8px); }
+  50% { transform: translate(-3px, -15px); }
+  75% { transform: translate(-8px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 9. fade_in — appear with scale-up */
+@keyframes fade_in {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 10. fade_out — disappear */
+@keyframes fade_out {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* 11. shake — rapid vibrations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-3px); }
+  20% { transform: translateX(3px); }
+  30% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(2px); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  90% { transform: translateX(0); }
+}
+
+/* 12. spin — continuous 360° rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 13. twinkle — opacity flicker */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+  75% { opacity: 0.3; }
+}
+
+/* Speed classes */
+.anim-slow { --anim-duration: 3s; }
+.anim-medium { --anim-duration: 1.5s; }
+.anim-fast { --anim-duration: 0.6s; }
+
+/* Animation application classes */
+.anim-idle_bob { animation: idle_bob var(--anim-duration, 2s) ease-in-out infinite; }
+.anim-oscillate_y { animation: oscillate_y var(--anim-duration, 1.5s) ease-in-out infinite; }
+.anim-oscillate_x { animation: oscillate_x var(--anim-duration, 1.5s) ease-in-out infinite; }
+.anim-pulse_scale { animation: pulse_scale var(--anim-duration, 2s) ease-in-out infinite; }
+.anim-translate_x { animation: translate_x var(--anim-duration, 2s) ease-in-out infinite alternate; }
+.anim-translate_y { animation: translate_y var(--anim-duration, 2s) ease-in-out infinite alternate; }
+.anim-rotate_oscillate { animation: rotate_oscillate var(--anim-duration, 2s) ease-in-out infinite; }
+.anim-float { animation: float var(--anim-duration, 4s) ease-in-out infinite; }
+.anim-fade_in { animation: fade_in 0.8s ease-out forwards; }
+.anim-fade_out { animation: fade_out 0.8s ease-in forwards; }
+.anim-shake { animation: shake var(--anim-duration, 0.5s) ease-in-out infinite; }
+.anim-spin { animation: spin var(--anim-duration, 2s) linear infinite; }
+.anim-twinkle { animation: twinkle var(--anim-duration, 2s) ease-in-out infinite; }
+.anim-none { animation: none; }
