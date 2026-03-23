@@ -1,0 +1,164 @@
+{
+  "id": "goldilocks",
+  "title": "Goldilocks and the Three Bears",
+  "synopsis": "A curious girl named Goldilocks stumbles upon the home of three bears deep in the forest. She tries their porridge, their chairs, and their beds — but what happens when the bears come home?",
+  "cover_prompt": "A golden-haired girl in a blue dress peeking through the doorway of a cozy forest cottage, three bears of different sizes visible through the window, semi-realistic detailed illustration, warm dappled forest light, Studio Ghibli style",
+  "age_range": [5, 9],
+  "duration_minutes": 10,
+  "essence": "Respect other people's belongings and spaces. Curiosity is wonderful but should be paired with courtesy. Everyone deserves to feel safe in their own home.",
+  "characters": [
+    {
+      "id": "goldilocks",
+      "name": "Goldilocks",
+      "description": "A curious adventurous girl with long golden curly hair, wearing a blue dress with a white apron. Bright green eyes and rosy cheeks.",
+      "visual_prompt": "A young girl about 8 years old with long golden curly hair, wearing a blue dress with white apron, bright green eyes, rosy cheeks, adventurous expression, standing upright, semi-realistic detailed illustration, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.9
+    },
+    {
+      "id": "papa_bear",
+      "name": "Papa Bear",
+      "description": "A large brown bear wearing a plaid flannel shirt. Gentle giant with deep voice. The biggest of the three.",
+      "visual_prompt": "A large anthropomorphic brown bear wearing a red plaid flannel shirt, standing upright on two legs, gentle but surprised expression, big strong build, semi-realistic detailed illustration, detailed fur texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.4
+    },
+    {
+      "id": "mama_bear",
+      "name": "Mama Bear",
+      "description": "A medium brown bear wearing a floral apron and a sun hat. Warm and nurturing.",
+      "visual_prompt": "A medium-sized anthropomorphic brown bear wearing a floral apron and a yellow sun hat, standing upright on two legs, warm nurturing expression, semi-realistic detailed illustration, detailed fur texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.1
+    },
+    {
+      "id": "baby_bear",
+      "name": "Baby Bear",
+      "description": "A small adorable bear cub wearing a striped sweater. Shy, cute, with big round eyes.",
+      "visual_prompt": "A small adorable anthropomorphic bear cub wearing a yellow and blue striped sweater, standing upright on two legs, big round innocent eyes, shy cute expression, semi-realistic detailed illustration, soft fur texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.7
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "forest_path",
+      "description": "A winding path through a beautiful sunlit forest",
+      "visual_prompt": "A winding dirt path through a beautiful sunlit forest, tall trees with golden and green leaves, dappled sunlight filtering through canopy, wildflowers along the path, semi-realistic detailed illustration, warm morning lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "bear_cottage_exterior",
+      "description": "A charming stone cottage nestled among the trees",
+      "visual_prompt": "A charming stone cottage with a thatched roof nestled among tall forest trees, a wooden door slightly ajar, flower boxes in the windows, smoke curling from the chimney, semi-realistic detailed illustration, warm dappled forest lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "bear_kitchen",
+      "description": "A cozy bear-sized kitchen with three bowls of porridge on a wooden table",
+      "visual_prompt": "A cozy rustic kitchen interior with a large wooden table, three bowls of steaming porridge in different sizes, wooden chairs, copper pots hanging, warm firelight glow, semi-realistic detailed illustration, 16:9 landscape composition"
+    },
+    {
+      "id": "bear_living_room",
+      "description": "A living room with three chairs of different sizes",
+      "visual_prompt": "A cozy cottage living room with three armchairs of different sizes arranged by a stone fireplace, a large one, a medium one, and a tiny adorable one, braided rug on wooden floor, bookshelves on wall, semi-realistic detailed illustration, warm firelight, 16:9 landscape composition"
+    },
+    {
+      "id": "bear_bedroom",
+      "description": "A bedroom with three beds of different sizes",
+      "visual_prompt": "A charming cottage bedroom with three beds in a row — one large with a plaid blanket, one medium with a floral quilt, and one small with a patchwork blanket, moonlight through window, cozy atmosphere, semi-realistic detailed illustration, 16:9 landscape composition"
+    }
+  ],
+  "beats": [
+    {
+      "id": "opening",
+      "act": 1,
+      "scene": "forest_path",
+      "characters_present": ["goldilocks"],
+      "narration_guide": "Introduce Goldilocks walking through the beautiful forest on a sunny morning. She's curious and adventurous, skipping along the path, picking wildflowers. Describe the forest — the tall trees, the birdsong, the dappled sunlight. She spots a cottage in the distance and her eyes light up with curiosity. At least 5-6 descriptive sentences.",
+      "initial_positions": {
+        "goldilocks": {"x": 40, "y": 65, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they've ever explored a forest and what they might find"
+    },
+    {
+      "id": "discovers_cottage",
+      "act": 1,
+      "scene": "bear_cottage_exterior",
+      "characters_present": ["goldilocks"],
+      "narration_guide": "Goldilocks approaches the cottage. She notices the door is slightly open. She knows she should probably knock, but curiosity gets the better of her. Describe the cottage in detail — the stone walls, the thatched roof, the flower boxes. She pushes the door open and peeks inside. At least 4-5 sentences.",
+      "initial_positions": {
+        "goldilocks": {"x": 55, "y": 65, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child whether Goldilocks should go inside or knock first"
+    },
+    {
+      "id": "porridge_tasting",
+      "act": 2,
+      "scene": "bear_kitchen",
+      "characters_present": ["goldilocks"],
+      "narration_guide": "Goldilocks finds three bowls of porridge on the table. She tries the big one — TOO HOT! She tries the medium one — TOO COLD! She tries the little one — JUST RIGHT, and eats it all up! Describe each tasting with vivid detail — the steam rising, her reactions, the different flavors. At least 5-6 sentences with expressive descriptions.",
+      "initial_positions": {
+        "goldilocks": {"x": 50, "y": 60, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what their favorite breakfast food is"
+    },
+    {
+      "id": "chair_sitting",
+      "act": 2,
+      "scene": "bear_living_room",
+      "characters_present": ["goldilocks"],
+      "narration_guide": "Goldilocks wanders into the living room and tries the chairs. Papa's chair is too hard! Mama's chair is too soft! Baby Bear's chair is just right — but CRACK! It breaks under her! Describe the physical comedy of each chair attempt and her surprise when the little chair collapses. At least 5-6 sentences.",
+      "initial_positions": {
+        "goldilocks": {"x": 50, "y": 60, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they have a favorite chair at home"
+    },
+    {
+      "id": "falls_asleep",
+      "act": 2,
+      "scene": "bear_bedroom",
+      "characters_present": ["goldilocks"],
+      "narration_guide": "Feeling sleepy, Goldilocks goes upstairs and tries the beds. Papa's bed is too firm, Mama's bed is too squishy, but Baby Bear's bed is perfectly cozy. She curls up and falls fast asleep, her golden curls spread across the pillow. Describe the peaceful scene with soft moonlight. At least 4-5 sentences.",
+      "initial_positions": {
+        "goldilocks": {"x": 65, "y": 55, "scale": 0.85, "rotation": -10}
+      },
+      "interaction_hint": "Ask the child what they think will happen when the bears come home"
+    },
+    {
+      "id": "bears_return",
+      "act": 2,
+      "scene": "bear_kitchen",
+      "characters_present": ["papa_bear", "mama_bear", "baby_bear"],
+      "narration_guide": "The three bears return from their walk. Papa Bear notices his porridge has been tasted. Mama Bear notices hers has been tasted too. Baby Bear cries 'Someone ate ALL my porridge!' Give each bear a distinct voice and reaction. Papa is gruff but calm, Mama is concerned, Baby is upset. At least 5-6 sentences.",
+      "initial_positions": {
+        "papa_bear": {"x": 25, "y": 58, "scale": 1.4, "rotation": 0},
+        "mama_bear": {"x": 50, "y": 60, "scale": 1.1, "rotation": 0},
+        "baby_bear": {"x": 70, "y": 65, "scale": 0.7, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child to help make Baby Bear's upset voice"
+    },
+    {
+      "id": "bears_find_goldilocks",
+      "act": 3,
+      "scene": "bear_bedroom",
+      "characters_present": ["papa_bear", "mama_bear", "baby_bear", "goldilocks"],
+      "narration_guide": "The bears follow the trail of disturbances upstairs. They check each bed. Finally Baby Bear shouts 'Someone is sleeping in MY bed, and she's STILL HERE!' Goldilocks wakes up startled, sees three bears staring at her, and jumps out of bed! Describe the moment of surprise and the bears' expressions — more confused than angry. At least 5-6 sentences.",
+      "initial_positions": {
+        "papa_bear": {"x": 20, "y": 58, "scale": 1.4, "rotation": 0},
+        "mama_bear": {"x": 38, "y": 60, "scale": 1.1, "rotation": 0},
+        "baby_bear": {"x": 52, "y": 65, "scale": 0.7, "rotation": 0},
+        "goldilocks": {"x": 72, "y": 60, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what Goldilocks should say to the bears"
+    },
+    {
+      "id": "resolution",
+      "act": 3,
+      "scene": "bear_cottage_exterior",
+      "characters_present": ["papa_bear", "mama_bear", "baby_bear", "goldilocks"],
+      "narration_guide": "Goldilocks apologizes sincerely to the bears. She didn't mean to cause trouble — she was just so curious! The bears forgive her, because they understand curiosity. Mama Bear even offers to make fresh porridge for everyone. They all sit together and share a meal, and Goldilocks promises to always knock first from now on. Baby Bear and Goldilocks become friends. End on a warm, kind note about respecting others and making things right. At least 6-7 sentences.",
+      "initial_positions": {
+        "papa_bear": {"x": 20, "y": 60, "scale": 1.4, "rotation": 0},
+        "mama_bear": {"x": 38, "y": 62, "scale": 1.1, "rotation": 0},
+        "baby_bear": {"x": 55, "y": 66, "scale": 0.7, "rotation": 0},
+        "goldilocks": {"x": 72, "y": 64, "scale": 0.9, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they would do if they accidentally went into someone else's house"
+    }
+  ]
+}

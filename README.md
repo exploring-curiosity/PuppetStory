@@ -1,4 +1,4 @@
-# 🌙 Dream Weaver — Interactive AI Puppet Theater for Bedtime Stories
+# PuppetStory — Interactive AI Puppet Theater for Bedtime Stories
 
 > *"Hello there, little dreamer! I'm Dream Weaver, your magical storyteller..."*
 

@@ -1,0 +1,159 @@
+{
+  "id": "the_brave_mouse",
+  "title": "The Brave Little Mouse",
+  "synopsis": "A tiny mouse named Hazel dreams of seeing the world beyond her burrow. When a fierce storm threatens the forest, it's the smallest creature who finds the courage to save her neighbors.",
+  "cover_prompt": "A tiny brown mouse wearing a red bandana standing bravely on a mossy rock in a lush forest, looking up at towering trees, semi-realistic detailed illustration, dramatic lighting with sun rays breaking through clouds, Studio Ghibli style",
+  "age_range": [5, 11],
+  "duration_minutes": 11,
+  "essence": "True bravery isn't about size — it's about heart. Even the smallest among us can make the biggest difference when they care enough to act. Every creature matters.",
+  "characters": [
+    {
+      "id": "hazel_mouse",
+      "name": "Hazel",
+      "description": "A tiny brown field mouse with bright amber eyes, wearing a small red bandana around her neck. Determined expression despite her tiny size.",
+      "visual_prompt": "A tiny anthropomorphic brown field mouse wearing a small red bandana around her neck, bright amber eyes, standing upright on two legs, determined brave expression, semi-realistic detailed illustration, detailed fur texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.6
+    },
+    {
+      "id": "oak_owl",
+      "name": "Professor Oak",
+      "description": "A large wise old owl with spectacles perched on his beak, brown and cream feathers, lives in the highest tree. Speaks in a calm measured tone.",
+      "visual_prompt": "A large wise anthropomorphic owl with round spectacles perched on his beak, brown and cream detailed feathers, standing upright, scholarly dignified pose, semi-realistic detailed illustration, detailed feather texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.2
+    },
+    {
+      "id": "bramble_hedgehog",
+      "name": "Bramble",
+      "description": "A round hedgehog with a cozy knitted vest. Nervous and worrisome but loyal friend to Hazel.",
+      "visual_prompt": "A round anthropomorphic hedgehog wearing a cozy brown knitted vest, standing upright on two legs, nervous worried expression but kind eyes, detailed spines and fur, semi-realistic detailed illustration, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.75
+    },
+    {
+      "id": "river_otter",
+      "name": "River",
+      "description": "A sleek playful otter with a mischievous grin. Athletic and confident but underestimates small creatures.",
+      "visual_prompt": "A sleek anthropomorphic river otter standing upright on two legs, mischievous confident grin, athletic build, glossy brown fur, semi-realistic detailed illustration, detailed wet-look fur texture, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.0
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "mouse_burrow",
+      "description": "A cozy underground mouse burrow with tiny furniture",
+      "visual_prompt": "A cozy underground mouse burrow interior with tiny handmade furniture, a small bed with a patchwork quilt, acorn cap dishes on a tiny table, roots forming the ceiling, warm candlelight glow, semi-realistic detailed illustration, 16:9 landscape composition"
+    },
+    {
+      "id": "forest_clearing",
+      "description": "A beautiful forest clearing with tall ancient trees",
+      "visual_prompt": "A beautiful forest clearing surrounded by tall ancient oak trees, soft moss-covered ground, wildflowers, a small babbling brook, sun rays filtering through the canopy creating golden light shafts, semi-realistic detailed illustration, warm morning lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "owl_tree",
+      "description": "The base of a massive ancient oak tree where Professor Oak lives",
+      "visual_prompt": "The base of a massive ancient gnarled oak tree with a wooden door and windows carved into the trunk, books visible through the windows, lantern hanging from a branch, surrounded by ferns, semi-realistic detailed illustration, warm dappled forest lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "riverbank",
+      "description": "A wide river with smooth stones and reeds along the bank",
+      "visual_prompt": "A wide gentle river with smooth stones along the bank, tall reeds and cattails, a fallen log bridge across, sunlight sparkling on the water surface, green forest on both sides, semi-realistic detailed illustration, warm afternoon lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "storm_forest",
+      "description": "The forest during a dramatic thunderstorm",
+      "visual_prompt": "A dramatic dark forest during a thunderstorm, rain pouring down, lightning illuminating the sky, trees bending in the wind, puddles forming on the forest floor, dramatic moody atmosphere, semi-realistic detailed illustration, dark blue-purple dramatic lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "forest_after_storm",
+      "description": "The forest after the storm — rainbow and golden light",
+      "visual_prompt": "A beautiful forest after a rainstorm, everything glistening with raindrops, a magnificent rainbow arching across the sky, golden sunlight breaking through parting clouds, steam rising from the wet ground, semi-realistic detailed illustration, warm golden magical lighting, 16:9 landscape composition"
+    }
+  ],
+  "beats": [
+    {
+      "id": "opening",
+      "act": 1,
+      "scene": "mouse_burrow",
+      "characters_present": ["hazel_mouse"],
+      "narration_guide": "Introduce Hazel in her cozy little burrow. She's looking out through a tiny window at the big world above. She dreams of adventure but everyone tells her she's too small. Describe the burrow in loving detail — the tiny furniture, the warmth, the safety. But also Hazel's longing to explore. At least 5-6 sentences.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 50, "y": 60, "scale": 0.6, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they've ever felt too small to do something big"
+    },
+    {
+      "id": "meets_bramble",
+      "act": 1,
+      "scene": "forest_clearing",
+      "characters_present": ["hazel_mouse", "bramble_hedgehog"],
+      "narration_guide": "Hazel ventures out into the forest clearing and meets her best friend Bramble the hedgehog. Bramble is nervous as usual, worried about everything — hawks overhead, thorns underfoot. But he's loyal and always walks with Hazel. They chat about Hazel's dream to climb to the top of the Great Oak. Bramble thinks it's far too dangerous. At least 5-6 sentences showing their friendship dynamic.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 40, "y": 68, "scale": 0.6, "rotation": 0},
+        "bramble_hedgehog": {"x": 62, "y": 65, "scale": 0.75, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child about their best friend and what makes a good friend"
+    },
+    {
+      "id": "meets_river",
+      "act": 1,
+      "scene": "riverbank",
+      "characters_present": ["hazel_mouse", "river_otter"],
+      "narration_guide": "Hazel and Bramble reach the riverbank where River the otter is doing backflips off the log bridge. River is confident and athletic — he laughs kindly when Hazel says she wants to climb the Great Oak. 'You? You're barely bigger than an acorn!' But he means no harm — he just can't imagine someone so small doing something so big. At least 5-6 sentences.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 65, "y": 68, "scale": 0.6, "rotation": 0},
+        "river_otter": {"x": 30, "y": 60, "scale": 1.0, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if it's nice to laugh at someone's dreams, and what they'd say to River"
+    },
+    {
+      "id": "visits_owl",
+      "act": 2,
+      "scene": "owl_tree",
+      "characters_present": ["hazel_mouse", "oak_owl"],
+      "narration_guide": "Hazel visits Professor Oak in his tree library. The wise old owl looks down at her through his spectacles and listens carefully to her dream. Unlike the others, he doesn't laugh. He tells her: 'The size of your body has nothing to do with the size of your courage, little one.' He warns her that a great storm is coming and the forest will need every brave heart. At least 5-6 thoughtful sentences.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 55, "y": 72, "scale": 0.6, "rotation": 0},
+        "oak_owl": {"x": 35, "y": 45, "scale": 1.2, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they think Professor Oak means about courage and size"
+    },
+    {
+      "id": "storm_arrives",
+      "act": 2,
+      "scene": "storm_forest",
+      "characters_present": ["hazel_mouse", "bramble_hedgehog"],
+      "narration_guide": "The storm arrives with terrifying power. Thunder shakes the ground, rain pours in sheets, and the wind howls through the trees. Bramble is paralyzed with fear, curled into a tight ball. River is trapped on the wrong side of the flooded river. Professor Oak's tree is creaking dangerously. But Hazel — tiny Hazel — stands firm. Her heart is pounding, but she remembers what the owl said. At least 6-7 dramatic tense sentences.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 45, "y": 68, "scale": 0.6, "rotation": 0},
+        "bramble_hedgehog": {"x": 65, "y": 70, "scale": 0.7, "rotation": 15}
+      },
+      "interaction_hint": "Ask the child what they think Hazel should do in the storm"
+    },
+    {
+      "id": "hazel_saves_day",
+      "act": 2,
+      "scene": "storm_forest",
+      "characters_present": ["hazel_mouse", "bramble_hedgehog", "river_otter"],
+      "narration_guide": "Hazel springs into action! Because she's so small, she can squeeze through gaps in the fallen branches that no one else can fit through. She finds a rope tangled in the debris and drags it to the riverbank. She threads it through tiny crevices to create a bridge line for River. She squeezes under the roots to redirect water away from Bramble's hiding spot. Every ability that made her 'too small' becomes her greatest strength. At least 6-7 action-packed sentences.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 50, "y": 65, "scale": 0.6, "rotation": 0},
+        "bramble_hedgehog": {"x": 75, "y": 68, "scale": 0.7, "rotation": 0},
+        "river_otter": {"x": 20, "y": 62, "scale": 1.0, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child to cheer Hazel on"
+    },
+    {
+      "id": "resolution",
+      "act": 3,
+      "scene": "forest_after_storm",
+      "characters_present": ["hazel_mouse", "bramble_hedgehog", "river_otter", "oak_owl"],
+      "narration_guide": "The storm passes. A magnificent rainbow stretches across the sky. All the forest creatures gather around Hazel. River apologizes for laughing — he now knows that bravery has nothing to do with size. Bramble hugs his best friend. Professor Oak nods wisely from his branch. The animals lift tiny Hazel up on their shoulders — the smallest hero the forest has ever known. Describe the beauty of the post-storm forest and the warmth of community. End with Hazel finally climbing to the top of the Great Oak to watch the sunset, her dream fulfilled. At least 7-8 sentences for a rich, satisfying conclusion.",
+      "initial_positions": {
+        "hazel_mouse": {"x": 50, "y": 62, "scale": 0.6, "rotation": 0},
+        "bramble_hedgehog": {"x": 35, "y": 68, "scale": 0.75, "rotation": 0},
+        "river_otter": {"x": 65, "y": 64, "scale": 1.0, "rotation": 0},
+        "oak_owl": {"x": 20, "y": 40, "scale": 1.2, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they learned from Hazel's adventure"
+    }
+  ]
+}

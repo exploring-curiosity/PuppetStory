@@ -1,0 +1,178 @@
+{
+  "id": "three_little_pigs",
+  "title": "The Three Little Pigs",
+  "synopsis": "Three pig brothers set out to build their own homes. When a mischievous wolf comes knocking, only the wisest builder's house can withstand the huffing and puffing. A timeless tale of perseverance and clever thinking.",
+  "cover_prompt": "Three pig brothers standing together in a sunny meadow, one wearing glasses and a blue vest, one in a green scarf, one small with a red cap, semi-realistic detailed illustration, warm golden hour lighting, Studio Ghibli style, lush green hills in background",
+  "age_range": [5, 10],
+  "duration_minutes": 12,
+  "essence": "Hard work and perseverance lead to safety and success. Taking shortcuts has consequences, but family always sticks together. Cleverness triumphs over brute force.",
+  "characters": [
+    {
+      "id": "pig_eldest",
+      "name": "Percy",
+      "description": "The eldest pig brother — wise, patient, wears round glasses and a blue vest. Slightly chubby with a confident, thoughtful expression.",
+      "visual_prompt": "A chubby anthropomorphic pig character wearing round glasses and a blue vest, standing upright on two legs, semi-realistic detailed illustration style, detailed skin and fabric textures, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.0
+    },
+    {
+      "id": "pig_middle",
+      "name": "Pete",
+      "description": "The middle pig brother — cheerful and easygoing, wears a green scarf. Average build with a friendly smile.",
+      "visual_prompt": "An anthropomorphic pig character wearing a green scarf, standing upright on two legs, cheerful friendly smile, semi-realistic detailed illustration style, detailed skin and fabric textures, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.0
+    },
+    {
+      "id": "pig_youngest",
+      "name": "Pip",
+      "description": "The youngest pig brother — small, playful, energetic, wears a red cap. Slightly smaller than his brothers with big curious eyes.",
+      "visual_prompt": "A small anthropomorphic pig character wearing a red baseball cap, standing upright on two legs, big curious eyes, playful energetic pose, semi-realistic detailed illustration style, detailed skin textures, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.85
+    },
+    {
+      "id": "wolf",
+      "name": "Wolfgang",
+      "description": "A tall lanky gray wolf with a crooked top hat. Tries to look menacing but is actually goofy and dramatic. Exaggerated expressions.",
+      "visual_prompt": "A tall lanky anthropomorphic gray wolf wearing a crooked black top hat, standing upright, mischievous grin showing teeth, dramatic pose, semi-realistic detailed illustration style, detailed fur texture, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.3
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "meadow",
+      "description": "A sunny meadow with rolling green hills and wildflowers",
+      "visual_prompt": "A wide panoramic sunny meadow with rolling green hills, colorful wildflowers scattered across the grass, blue sky with fluffy white clouds, a winding dirt path, semi-realistic detailed illustration, warm golden hour lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "straw_house",
+      "description": "A flimsy house made of golden straw bundles",
+      "visual_prompt": "A small flimsy house made entirely of golden straw bundles, standing in a grassy clearing, slightly leaning and unstable looking, blue sky background, semi-realistic detailed illustration, warm afternoon lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "stick_house",
+      "description": "A house made of wooden sticks and branches",
+      "visual_prompt": "A medium-sized house made of wooden sticks and branches tied together, standing in a forest clearing with trees nearby, more sturdy than straw but still rustic, semi-realistic detailed illustration, warm lighting filtering through trees, 16:9 landscape composition"
+    },
+    {
+      "id": "brick_house",
+      "description": "A sturdy red brick house with a chimney and a neat garden",
+      "visual_prompt": "A sturdy charming red brick cottage with a smoking chimney, neat flower garden out front, stone pathway, white picket fence, green hills in background, semi-realistic detailed illustration, warm afternoon golden lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "brick_house_interior",
+      "description": "The cozy interior of the brick house with a fireplace",
+      "visual_prompt": "A cozy warm interior of a brick cottage, roaring fireplace, comfortable armchairs, wooden floor, hanging pots, warm orange lighting from the fire, semi-realistic detailed illustration, 16:9 landscape composition"
+    }
+  ],
+  "beats": [
+    {
+      "id": "opening",
+      "act": 1,
+      "scene": "meadow",
+      "characters_present": ["pig_eldest", "pig_middle", "pig_youngest"],
+      "narration_guide": "Introduce the three pig brothers on a beautiful sunny morning. They've decided it's time to leave home and build their own houses. Describe the meadow, the excitement in the air, and each brother's personality. Percy is thoughtful, Pete is carefree, and little Pip is bouncing with energy. At least 5-6 sentences of rich narration.",
+      "initial_positions": {
+        "pig_eldest": {"x": 25, "y": 65, "scale": 1.0, "rotation": 0},
+        "pig_middle": {"x": 50, "y": 65, "scale": 1.0, "rotation": 0},
+        "pig_youngest": {"x": 72, "y": 68, "scale": 0.85, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child which pig they think will build the strongest house and why"
+    },
+    {
+      "id": "pip_builds_straw",
+      "act": 1,
+      "scene": "straw_house",
+      "characters_present": ["pig_youngest"],
+      "narration_guide": "Little Pip rushes ahead and decides to build his house out of straw — it's the fastest option so he can get back to playing! Describe him gathering straw, stacking it up carelessly, and admiring his wobbly creation with pride. The house leans slightly. At least 4-5 sentences.",
+      "initial_positions": {
+        "pig_youngest": {"x": 60, "y": 65, "scale": 0.85, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they think a straw house is a good idea"
+    },
+    {
+      "id": "pete_builds_sticks",
+      "act": 1,
+      "scene": "stick_house",
+      "characters_present": ["pig_middle"],
+      "narration_guide": "Pete finds a nice spot near the forest and builds his house from sticks and branches. It takes a bit longer than straw, and he's pleased with himself. The house looks decent but creaks in the wind. At least 4-5 sentences.",
+      "initial_positions": {
+        "pig_middle": {"x": 55, "y": 65, "scale": 1.0, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what sound a stick house might make in the wind"
+    },
+    {
+      "id": "percy_builds_bricks",
+      "act": 2,
+      "scene": "brick_house",
+      "characters_present": ["pig_eldest"],
+      "narration_guide": "Percy takes his time, carefully laying brick after brick. His brothers laugh at how slow he is, but Percy knows that good things take time. The house rises strong and solid with a proper chimney and a neat garden. At least 5-6 sentences with detail about the craftsmanship.",
+      "initial_positions": {
+        "pig_eldest": {"x": 50, "y": 65, "scale": 1.0, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child how long they think it took Percy to build his house"
+    },
+    {
+      "id": "wolf_arrives_straw",
+      "act": 2,
+      "scene": "straw_house",
+      "characters_present": ["pig_youngest", "wolf"],
+      "narration_guide": "One evening, a shadow falls across the meadow. Wolfgang the wolf slinks up to Pip's straw house with a wicked grin. He knocks on the door dramatically and announces himself. Build tension with descriptions of the wolf's looming figure and Pip trembling inside. 'Little pig, little pig, let me come in!' At least 5-6 dramatic sentences.",
+      "initial_positions": {
+        "pig_youngest": {"x": 70, "y": 65, "scale": 0.85, "rotation": 0},
+        "wolf": {"x": 20, "y": 58, "scale": 1.3, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they think Pip should do"
+    },
+    {
+      "id": "wolf_blows_straw",
+      "act": 2,
+      "scene": "straw_house",
+      "characters_present": ["pig_youngest", "wolf"],
+      "narration_guide": "Wolfgang takes a deeeep breath, puffs up his cheeks, and HUFFS and PUFFS with all his might! The straw house swirls apart in a golden tornado! Pip squeals and runs as fast as his little legs can carry him toward Pete's stick house. Wolfgang gives chase with a dramatic laugh. At least 5-6 action-packed sentences with sound effects.",
+      "initial_positions": {
+        "pig_youngest": {"x": 65, "y": 65, "scale": 0.85, "rotation": 0},
+        "wolf": {"x": 25, "y": 58, "scale": 1.3, "rotation": -5}
+      },
+      "interaction_hint": "Ask the child to help make the huffing and puffing sound"
+    },
+    {
+      "id": "wolf_blows_sticks",
+      "act": 2,
+      "scene": "stick_house",
+      "characters_present": ["pig_youngest", "pig_middle", "wolf"],
+      "narration_guide": "Pip arrives at Pete's stick house breathless and terrified. The two brothers huddle together as Wolfgang arrives, now even more confident. He huffs and puffs again — the stick house cracks, splinters, and collapses! Both pigs dash toward Percy's brick house. Describe the chaos, the flying sticks, and the wolf's over-the-top dramatic huffing. At least 5-6 sentences.",
+      "initial_positions": {
+        "pig_youngest": {"x": 60, "y": 68, "scale": 0.85, "rotation": 0},
+        "pig_middle": {"x": 50, "y": 65, "scale": 1.0, "rotation": 0},
+        "wolf": {"x": 15, "y": 58, "scale": 1.3, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they think the brick house will hold"
+    },
+    {
+      "id": "wolf_fails_bricks",
+      "act": 2,
+      "scene": "brick_house",
+      "characters_present": ["pig_eldest", "pig_middle", "pig_youngest", "wolf"],
+      "narration_guide": "All three pigs are now safe inside Percy's brick house. Wolfgang arrives, exhausted but determined. He huffs! He puffs! He HUFFS AND PUFFS with everything he's got! But the brick house doesn't even tremble. Not a single brick moves. Wolfgang collapses in a heap, completely out of breath, his top hat falling over his eyes. Describe the contrast between the wolf's dramatic exertion and the house standing firm. At least 6-7 sentences.",
+      "initial_positions": {
+        "pig_eldest": {"x": 35, "y": 65, "scale": 1.0, "rotation": 0},
+        "pig_middle": {"x": 50, "y": 65, "scale": 1.0, "rotation": 0},
+        "pig_youngest": {"x": 62, "y": 68, "scale": 0.85, "rotation": 0},
+        "wolf": {"x": 15, "y": 58, "scale": 1.3, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child why they think the brick house is so strong"
+    },
+    {
+      "id": "resolution",
+      "act": 3,
+      "scene": "brick_house_interior",
+      "characters_present": ["pig_eldest", "pig_middle", "pig_youngest"],
+      "narration_guide": "Inside the warm brick house, the three brothers sit by the crackling fireplace. Pip and Pete thank Percy for building such a strong house. Percy smiles and says that taking your time to do things right always pays off. They share a warm meal together, laughing about the silly wolf and his dramatic huffing. Outside, Wolfgang trudges away, his top hat drooping, muttering about finding a new hobby — maybe gardening. End with a warm, cozy feeling. At least 6-7 sentences for a satisfying conclusion.",
+      "initial_positions": {
+        "pig_eldest": {"x": 30, "y": 60, "scale": 1.0, "rotation": 0},
+        "pig_middle": {"x": 50, "y": 62, "scale": 1.0, "rotation": 0},
+        "pig_youngest": {"x": 68, "y": 65, "scale": 0.85, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they learned from the three little pigs"
+    }
+  ]
+}

@@ -1,113 +1,163 @@
 import asyncio
 import json
+import time
 import traceback
 from google import genai
 from google.genai import types
-from system_prompt import SYSTEM_PROMPT
+from system_prompt import build_system_prompt
 
-generate_scene_declaration = {
-    "name": "generate_scene",
+# ─── Tool declarations ──────────────────────────────────────────────────
+
+set_scene_declaration = {
+    "name": "set_scene",
     "description": (
-        "Generate an animated scene illustration for the current story moment. "
-        "Call this when introducing new characters, changing settings, dramatic actions, "
-        "or when the child adds new story elements."
+        "Change the scene background and set initial puppet positions. "
+        "Call when transitioning between story beats or changing locations. "
+        "Use background_id from the story data. Position puppets using x,y coordinates (0-100)."
     ),
     "behavior": "NON_BLOCKING",
     "parameters": {
         "type": "object",
         "properties": {
-            "scene_title": {
+            "background_id": {
                 "type": "string",
-                "description": "Short descriptive title for this scene"
+                "description": "ID of the background from the story data (e.g. 'meadow', 'brick_house')"
             },
             "mood": {
                 "type": "string",
-                "enum": ["exciting", "calm", "mysterious", "funny", "magical", "sleepy"],
-                "description": "Overall mood affecting visual filters"
+                "enum": ["exciting", "calm", "mysterious", "funny", "magical", "sleepy", "tense", "triumphant"],
+                "description": "Overall mood affecting the visual atmosphere"
             },
             "transition": {
                 "type": "string",
-                "enum": ["cut", "fade"],
+                "enum": ["crossfade", "cut", "slide_left", "slide_right"],
                 "description": "How to transition into this scene"
             },
-            "elements": {
+            "puppets": {
                 "type": "array",
-                "description": "List of visual elements in the scene (2-5 elements)",
+                "description": "List of characters to display in this scene with their positions",
                 "items": {
                     "type": "object",
                     "properties": {
-                        "id": {
+                        "character_id": {
                             "type": "string",
-                            "description": "Persistent unique ID like 'pink_dragon_body', 'cave_background'. Reuse the same ID for recurring elements."
+                            "description": "ID of the character from the story data"
                         },
-                        "description": {
-                            "type": "string",
-                            "description": "Visual description for image generation. Required when is_new is true. Include art style and 'isolated on white background'."
-                        },
-                        "is_new": {
-                            "type": "boolean",
-                            "description": "True if this element needs new image generation. False to reuse cached image."
-                        },
-                        "position_x": {
+                        "x": {
                             "type": "number",
                             "description": "Horizontal position 0-100 (0=left, 50=center, 100=right)"
                         },
-                        "position_y": {
+                        "y": {
                             "type": "number",
-                            "description": "Vertical position 0-100 (0=top, 50=center, 100=bottom)"
+                            "description": "Vertical position 0-100 (0=top, 50=middle, 100=bottom)"
                         },
                         "scale": {
                             "type": "number",
-                            "description": "Size multiplier. 1.0=normal, 0.5=half, 2.0=double. Default 1.0"
+                            "description": "Size multiplier relative to character's base scale. 1.0=normal. Default 1.0"
                         },
-                        "z_index": {
-                            "type": "integer",
-                            "description": "Layer order. 0=background (furthest back), higher=closer to viewer"
+                        "rotation": {
+                            "type": "number",
+                            "description": "Rotation in degrees. 0=upright. Positive=clockwise. Default 0"
                         },
-                        "animation": {
-                            "type": "object",
-                            "description": "Animation configuration for this element",
-                            "properties": {
-                                "type": {
-                                    "type": "string",
-                                    "enum": [
-                                        "idle_bob", "oscillate_y", "oscillate_x",
-                                        "pulse_scale", "translate_x", "translate_y",
-                                        "rotate_oscillate", "float", "fade_in",
-                                        "fade_out", "shake", "spin", "twinkle", "none"
-                                    ],
-                                    "description": "Animation type from the vocabulary"
-                                },
-                                "speed": {
-                                    "type": "string",
-                                    "enum": ["slow", "medium", "fast"],
-                                    "description": "Animation speed"
-                                },
-                                "intensity": {
-                                    "type": "number",
-                                    "description": "Animation intensity from 0.1 to 1.0"
-                                }
-                            },
-                            "required": ["type", "speed"]
+                        "opacity": {
+                            "type": "number",
+                            "description": "Visibility 0.0 (invisible) to 1.0 (fully visible). Default 1.0"
                         }
                     },
-                    "required": ["id", "is_new", "position_x", "position_y", "z_index", "animation"]
+                    "required": ["character_id", "x", "y"]
                 }
             }
         },
-        "required": ["scene_title", "mood", "transition", "elements"]
+        "required": ["background_id", "mood", "puppets"]
+    }
+}
+
+action_sequence_declaration = {
+    "name": "action_sequence",
+    "description": (
+        "Animate puppets with timed keyframe sequences. Use for character movement, "
+        "interactions, gestures, and dramatic moments. Each puppet gets an array of "
+        "keyframes defining position, scale, rotation, and opacity at specific times. "
+        "The frontend smoothly interpolates between keyframes. "
+        "IMPORTANT: When puppets interact, coordinate their positions so they are adjacent. "
+        "Respect relative sizes (e.g. a mouse should be much smaller than a bear)."
+    ),
+    "behavior": "NON_BLOCKING",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "duration": {
+                "type": "number",
+                "description": "Total animation duration in seconds (1-10)"
+            },
+            "animations": {
+                "type": "array",
+                "description": "List of puppet animations, one per character to animate",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "character_id": {
+                            "type": "string",
+                            "description": "ID of the character to animate"
+                        },
+                        "easing": {
+                            "type": "string",
+                            "enum": ["linear", "ease-in", "ease-out", "ease-in-out"],
+                            "description": "Easing function for interpolation between keyframes"
+                        },
+                        "keyframes": {
+                            "type": "array",
+                            "description": "Timed keyframes for this puppet's motion",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "t": {
+                                        "type": "number",
+                                        "description": "Time in seconds from sequence start"
+                                    },
+                                    "x": {
+                                        "type": "number",
+                                        "description": "Horizontal position 0-100"
+                                    },
+                                    "y": {
+                                        "type": "number",
+                                        "description": "Vertical position 0-100"
+                                    },
+                                    "rotation": {
+                                        "type": "number",
+                                        "description": "Rotation in degrees"
+                                    },
+                                    "scale": {
+                                        "type": "number",
+                                        "description": "Size multiplier relative to character base scale"
+                                    },
+                                    "opacity": {
+                                        "type": "number",
+                                        "description": "Visibility 0.0-1.0"
+                                    }
+                                },
+                                "required": ["t", "x", "y"]
+                            }
+                        }
+                    },
+                    "required": ["character_id", "keyframes"]
+                }
+            }
+        },
+        "required": ["duration", "animations"]
     }
 }
 
 LIVE_MODEL = "gemini-2.5-flash-native-audio-preview-12-2025"
 
 
-def get_live_config():
+def get_live_config(story: dict = None):
     """Return the Live API session configuration."""
+    system_prompt = build_system_prompt(story)
     return {
         "response_modalities": ["AUDIO"],
-        "system_instruction": SYSTEM_PROMPT,
-        "tools": [{"function_declarations": [generate_scene_declaration]}],
+        "system_instruction": system_prompt,
+        "tools": [{"function_declarations": [set_scene_declaration, action_sequence_declaration]}],
         "speech_config": {
             "voice_config": {
                 "prebuilt_voice_config": {"voice_name": "Aoede"}
@@ -119,32 +169,23 @@ def get_live_config():
 
 
 class LiveSession:
-    """Manages a persistent Gemini Live API session for voice storytelling.
-    
-    Usage (context-manager style for proper lifecycle):
-        session = LiveSession(api_key)
-        async with session.connect() as s:
-            # s is the raw genai session object
-            await s.send_client_content(...)
-            async for response in s.receive():
-                ...
-    
-    Usage (server-style with run()):
-        session = LiveSession(api_key)
-        await session.run(on_audio, on_tool_call, on_transcript, on_ready)
-    """
+    """Manages a persistent Gemini Live API session for interactive puppet storytelling."""
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, story: dict = None, assets: dict = None):
         self.client = genai.Client(api_key=api_key)
+        self.story = story
+        self.assets = assets or {}
         self.session = None
         self._running = False
         self._send_queue = asyncio.Queue()
+        self._watchdog_armed_at = None  # timestamp when child text was sent
+        self._last_audio_at = None  # timestamp of last audio received
 
     def connect(self):
         """Return the async context manager for the Live API session."""
         return self.client.aio.live.connect(
             model=LIVE_MODEL,
-            config=get_live_config()
+            config=get_live_config(self.story)
         )
 
     async def run(self, on_audio, on_tool_call, on_transcript, on_ready=None, on_narration_text=None, on_turn_complete=None):
@@ -162,11 +203,12 @@ class LiveSession:
             if on_ready:
                 await on_ready(self)
 
-            # Run receive loop and send queue processor concurrently
+            # Run receive loop, send queue, and silence watchdog concurrently
             try:
                 async with asyncio.TaskGroup() as tg:
                     tg.create_task(self._receive_loop(on_audio, on_tool_call, on_transcript, on_narration_text, on_turn_complete))
                     tg.create_task(self._send_loop())
+                    tg.create_task(self._silence_watchdog())
             except* asyncio.CancelledError:
                 pass
             except* Exception as eg:
@@ -183,11 +225,39 @@ class LiveSession:
         await self._send_queue.put(("audio", pcm_bytes))
 
     async def send_text(self, text: str):
-        """Queue a text message to send to the session."""
+        """Queue a text message as a full turn (triggers thinking). Use for kickstart only."""
+        await self._send_queue.put(("text", text))
+
+    async def send_realtime_text(self, text: str):
+        """Send child text via realtime input — non-interrupting, model processes incrementally.
+        Also arms the silence watchdog to re-prompt if model goes silent."""
+        if self.session:
+            try:
+                await self.session.send_realtime_input(text=text)
+                # Arm watchdog: if no audio within 12s, send a nudge
+                self._watchdog_armed_at = time.time()
+                return
+            except Exception as e:
+                print(f"[LiveSession] Realtime text failed, falling back to queued: {e}")
         await self._send_queue.put(("text", text))
 
     async def send_tool_response(self, function_call_id: str, function_name: str, result: dict):
-        """Queue a function response to send back to the session."""
+        """Send tool response DIRECTLY to the session for minimum latency.
+        Falls back to queue if direct send fails."""
+        if self.session:
+            try:
+                response = types.FunctionResponse(
+                    id=function_call_id,
+                    name=function_name,
+                    response={**result, "scheduling": "SILENT"}
+                )
+                await self.session.send_tool_response(
+                    function_responses=[response]
+                )
+                return
+            except Exception as e:
+                print(f"[LiveSession] Direct tool response failed, queuing: {e}")
+        # Fallback to queue
         await self._send_queue.put(("tool_response", (function_call_id, function_name, result)))
 
     async def stop(self):
@@ -218,6 +288,8 @@ class LiveSession:
                         turns={"role": "user", "parts": [{"text": payload}]},
                         turn_complete=True
                     )
+                    # Don't arm watchdog here — it's armed by on_turn_complete in server.py
+                    # Arming here caused double-thinking on kickstart (12s watchdog + model thinking)
                 elif msg_type == "tool_response":
                     fc_id, fc_name, result = payload
                     response = types.FunctionResponse(
@@ -232,6 +304,36 @@ class LiveSession:
                 if self._running:
                     print(f"[LiveSession] Send error: {e}")
 
+    async def _silence_watchdog(self):
+        """Monitor for prolonged silence after TURN_COMPLETE or child text.
+        Sends up to 2 nudges via send_client_content (turn_complete=True).
+        Re-arms after first nudge to catch dead thinking cycles."""
+        WATCHDOG_TIMEOUT = 10  # seconds
+        _nudge_count = 0
+        MAX_NUDGES = 2
+        while self._running:
+            await asyncio.sleep(3)
+            if self._watchdog_armed_at is not None:
+                elapsed = time.time() - self._watchdog_armed_at
+                if elapsed >= WATCHDOG_TIMEOUT:
+                    _nudge_count += 1
+                    print(f"[LiveSession] Silence watchdog triggered ({elapsed:.1f}s, nudge #{_nudge_count}) — sending nudge")
+                    if _nudge_count >= MAX_NUDGES:
+                        self._watchdog_armed_at = None
+                        _nudge_count = 0
+                    else:
+                        # Re-arm for a second attempt
+                        self._watchdog_armed_at = time.time()
+                    try:
+                        await self.session.send_client_content(
+                            turns={"role": "user", "parts": [{"text": "Continue. Next beat now."}]},
+                            turn_complete=True
+                        )
+                    except Exception as e:
+                        print(f"[LiveSession] Watchdog nudge failed: {e}")
+            else:
+                _nudge_count = 0  # reset when not armed
+
     async def _receive_loop(self, on_audio, on_tool_call, on_transcript, on_narration_text=None, on_turn_complete=None):
         """Main receive loop dispatching to callbacks."""
         while self._running:
@@ -241,6 +343,8 @@ class LiveSession:
                     # Use response.data as the single source for audio
                     # (it's a convenience accessor for server_content.model_turn.parts inline_data)
                     if response.data:
+                        self._last_audio_at = time.time()
+                        self._watchdog_armed_at = None  # disarm watchdog on audio
                         await on_audio(response.data)
 
                     # Function / tool calls
@@ -252,9 +356,17 @@ class LiveSession:
                         sc = response.server_content
 
                         # Model turn parts — text only (audio already handled via response.data above)
+                        # Filter out reasoning/thinking text and control tokens
                         if sc.model_turn and sc.model_turn.parts:
                             for part in sc.model_turn.parts:
                                 if part.text and on_narration_text:
+                                    txt = part.text.strip()
+                                    # Skip thinking tokens, code blocks, and reasoning headers
+                                    if not txt or txt.startswith("<ctrl") or txt.startswith("```"):
+                                        continue
+                                    # Filter model reasoning text (e.g. "**Initiating story start**\n\nI'm setting...")
+                                    if txt.startswith("**") and ("\n" in txt or len(txt) > 80):
+                                        continue
                                     await on_narration_text(part.text)
 
                         # Output transcription (narrator)

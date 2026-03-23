@@ -1,0 +1,175 @@
+{
+  "id": "dragon_and_the_star",
+  "title": "The Dragon and the Fallen Star",
+  "synopsis": "A lonely dragon named Ember finds a fallen star in her mountain cave. Together they embark on a journey to return the star to the sky, discovering friendship and the meaning of letting go along the way.",
+  "cover_prompt": "A majestic purple dragon gently holding a glowing golden star in her claws on a moonlit mountain peak, semi-realistic detailed illustration, magical atmosphere with aurora borealis in the sky, Studio Ghibli style, dramatic lighting",
+  "age_range": [6, 12],
+  "duration_minutes": 14,
+  "essence": "True friendship sometimes means letting go. Loneliness isn't solved by holding on tighter — it's solved by opening your heart. The things we love most aren't meant to be kept, they're meant to be shared with the world.",
+  "characters": [
+    {
+      "id": "ember_dragon",
+      "name": "Ember",
+      "description": "A majestic but lonely purple dragon with iridescent scales, golden eyes, and small graceful wings. Not fearsome — elegant and gentle, with a melancholy expression that slowly brightens through the story.",
+      "visual_prompt": "A majestic anthropomorphic purple dragon with iridescent scales that shimmer blue and violet, golden eyes, small graceful wings, elegant gentle posture, standing upright on two legs, semi-realistic detailed illustration, detailed scale texture with iridescent highlights, warm lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.4
+    },
+    {
+      "id": "stella_star",
+      "name": "Stella",
+      "description": "A fallen star in humanoid form — a small glowing figure made of warm golden light, with a kind face and trailing sparkles. She flickers when she's weak.",
+      "visual_prompt": "A small humanoid figure made of warm golden glowing light, kind gentle face visible in the glow, trailing sparkles and light particles behind, ethereal translucent appearance, standing pose, semi-realistic detailed illustration with magical glow effects, warm golden lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 0.65
+    },
+    {
+      "id": "wind_spirit",
+      "name": "Zephyr",
+      "description": "A playful wind spirit — appears as a swirling translucent blue-white figure with flowing hair made of clouds. Mischievous but helpful.",
+      "visual_prompt": "A playful ethereal wind spirit appearing as a swirling translucent blue-white humanoid figure, flowing hair made of wispy clouds, mischievous smile, surrounded by swirling leaves and air currents, semi-realistic detailed illustration with transparency effects, cool blue lighting, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.0
+    },
+    {
+      "id": "shadow_creature",
+      "name": "The Gloom",
+      "description": "A dark shadowy creature that feeds on loneliness. Not truly evil — just misunderstood. Appears as a large amorphous dark shape with sad glowing eyes.",
+      "visual_prompt": "A large amorphous dark shadowy creature with wispy tendrils, two sad glowing purple eyes peering out from the darkness, not scary but melancholy, semi-realistic detailed illustration with shadow and mist effects, dark purple-blue tones, full body view, isolated on plain white background, no shadow",
+      "scale_factor": 1.5
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "dragon_cave",
+      "description": "A vast crystalline cave on a mountain peak, filled with glittering minerals but empty and lonely",
+      "visual_prompt": "A vast crystalline cave interior on a mountain peak, walls encrusted with glittering amethyst and quartz crystals, a large empty nest of gold and gems in the center, moonlight streaming through an opening showing stars outside, beautiful but lonely atmosphere, semi-realistic detailed illustration, cool purple-blue lighting with crystal reflections, 16:9 landscape composition"
+    },
+    {
+      "id": "mountain_peak",
+      "description": "A dramatic mountain peak under a starry night sky",
+      "visual_prompt": "A dramatic rocky mountain peak under a vast starry night sky, aurora borealis dancing in green and purple across the sky, snow on the peaks, a winding path leading down into misty valleys below, semi-realistic detailed illustration, dramatic night lighting with aurora glow, 16:9 landscape composition"
+    },
+    {
+      "id": "enchanted_valley",
+      "description": "A magical valley with bioluminescent plants and floating lights",
+      "visual_prompt": "A magical hidden valley with bioluminescent plants glowing blue and green, floating light orbs drifting through the air, ancient stone arches covered in glowing moss, a gentle stream reflecting all the lights, semi-realistic detailed illustration, magical twilight lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "wind_canyon",
+      "description": "A vast canyon where powerful winds swirl between towering cliff walls",
+      "visual_prompt": "A vast dramatic canyon with towering red and orange cliff walls, powerful wind visible as swirling dust and leaves between the cliffs, narrow sky above with dramatic clouds, semi-realistic detailed illustration, warm golden canyon lighting with dramatic shadows, 16:9 landscape composition"
+    },
+    {
+      "id": "shadow_forest",
+      "description": "A dark misty forest where shadows pool unnaturally deep",
+      "visual_prompt": "A dark mysterious forest with gnarled ancient trees, unnaturally deep shadows pooling between the trunks, faint eerie purple glow from deep within, mist rolling along the ground, semi-realistic detailed illustration, dark moody atmospheric lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "sky_bridge",
+      "description": "A bridge of clouds leading up toward the star-filled sky",
+      "visual_prompt": "A magnificent bridge made of solid clouds arching upward toward a brilliant star-filled sky, the bridge glowing with soft golden light, aurora borealis surrounding it, the world far below visible through gaps in the clouds, semi-realistic detailed illustration, magical ethereal lighting, 16:9 landscape composition"
+    },
+    {
+      "id": "starry_sky_final",
+      "description": "The night sky from the mountain peak, now with one new bright star",
+      "visual_prompt": "A breathtaking view of the night sky from a mountain peak, thousands of stars visible, one particularly bright golden star shining among them, aurora borealis in soft colors, peaceful serene atmosphere, semi-realistic detailed illustration, warm magical night lighting, 16:9 landscape composition"
+    }
+  ],
+  "beats": [
+    {
+      "id": "opening",
+      "act": 1,
+      "scene": "dragon_cave",
+      "characters_present": ["ember_dragon"],
+      "narration_guide": "Introduce Ember in her crystalline cave. She's magnificent but profoundly lonely. She's been alone for centuries, collecting treasures that sparkle but can't keep her company. Describe the beauty of the cave — the crystals, the moonlight — but also the emptiness. Ember sighs, and her breath makes the crystals chime softly. She wishes she had someone to talk to. At least 6-7 rich, atmospheric sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 50, "y": 60, "scale": 1.4, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they've ever felt lonely and what helped them feel better"
+    },
+    {
+      "id": "star_falls",
+      "act": 1,
+      "scene": "mountain_peak",
+      "characters_present": ["ember_dragon", "stella_star"],
+      "narration_guide": "One night, a brilliant streak of light blazes across the sky. A star is falling! It crashes near Ember's cave in a shower of golden sparks. Ember rushes out and finds a small glowing figure lying in a crater. It's Stella — a fallen star. She's weak and flickering, but her light is the warmest thing Ember has ever felt. Stella speaks in a voice like wind chimes. She needs to get back to the sky before her light goes out forever. At least 6-7 dramatic, beautiful sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 30, "y": 60, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 65, "y": 68, "scale": 0.65, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they've ever seen a shooting star and what they wished for"
+    },
+    {
+      "id": "journey_begins",
+      "act": 2,
+      "scene": "enchanted_valley",
+      "characters_present": ["ember_dragon", "stella_star"],
+      "narration_guide": "Ember and Stella travel through the enchanted valley, following the path that leads to the Sky Bridge. The valley is magical — bioluminescent plants light their way, and floating orbs dance around Stella as if greeting an old friend. Ember carries Stella gently in her claws. For the first time in centuries, Ember is laughing. Stella tells stories about the constellations — each one is a friend she misses. Describe the wonder of the valley and the growing bond between them. At least 6-7 sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 35, "y": 60, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 55, "y": 55, "scale": 0.65, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child to name a constellation they know or make one up"
+    },
+    {
+      "id": "wind_challenge",
+      "act": 2,
+      "scene": "wind_canyon",
+      "characters_present": ["ember_dragon", "stella_star", "wind_spirit"],
+      "narration_guide": "They reach the Wind Canyon where Zephyr the wind spirit blocks their path. The winds are too strong for Ember to fly through. Zephyr is playful but tests them — she says only those who truly understand the wind can pass. Stella whispers that the trick isn't to fight the wind but to dance with it. Ember spreads her wings and instead of pushing against the gale, she lets it carry her in spirals, gliding on the currents. Zephyr is delighted and lets them pass, joining them briefly to boost them forward. At least 6-7 sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 60, "y": 55, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 70, "y": 50, "scale": 0.65, "rotation": 0},
+        "wind_spirit": {"x": 25, "y": 45, "scale": 1.0, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they think it feels like to fly on the wind"
+    },
+    {
+      "id": "shadow_encounter",
+      "act": 2,
+      "scene": "shadow_forest",
+      "characters_present": ["ember_dragon", "stella_star", "shadow_creature"],
+      "narration_guide": "In the dark forest, The Gloom appears — a creature made of shadows that feeds on loneliness. It tries to convince Ember to keep Stella: 'If she goes back to the sky, you'll be alone again. Keep her. She's YOUR star now.' The Gloom's words sting because there's truth in them — Ember IS afraid of being alone again. Stella's light dims in the darkness. This is the emotional climax. Ember must choose between holding onto the one friend she has and doing the right thing. At least 7-8 emotionally resonant sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 40, "y": 58, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 55, "y": 62, "scale": 0.6, "rotation": 0},
+        "shadow_creature": {"x": 20, "y": 45, "scale": 1.5, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what they think Ember should do — keep Stella or let her go"
+    },
+    {
+      "id": "ember_chooses",
+      "act": 2,
+      "scene": "shadow_forest",
+      "characters_present": ["ember_dragon", "stella_star", "shadow_creature"],
+      "narration_guide": "Ember stands tall and tells The Gloom: 'Real love isn't about keeping someone. It's about wanting what's best for them, even when it hurts.' Her words echo through the forest. Stella's light blazes bright in response, pushing The Gloom back. The shadows retreat, and The Gloom shrinks — it was never truly evil, just lonely too. Ember gently says to The Gloom: 'You don't have to be alone either. Come with us.' The Gloom's sad eyes soften. At least 6-7 powerful sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 35, "y": 58, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 50, "y": 55, "scale": 0.65, "rotation": 0},
+        "shadow_creature": {"x": 75, "y": 50, "scale": 1.2, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they think The Gloom will change"
+    },
+    {
+      "id": "sky_bridge_ascent",
+      "act": 3,
+      "scene": "sky_bridge",
+      "characters_present": ["ember_dragon", "stella_star"],
+      "narration_guide": "Ember and Stella reach the Sky Bridge — a magnificent arc of clouds reaching into the heavens. This is where they must say goodbye. Stella glows brighter than ever, restored by the journey and Ember's love. They walk the bridge together slowly, neither wanting to reach the end. Stella promises that every night, she'll shine extra bright so Ember can always find her. Describe the breathtaking scenery and the bittersweet beauty of the moment. At least 6-7 deeply emotional sentences.",
+      "initial_positions": {
+        "ember_dragon": {"x": 35, "y": 60, "scale": 1.4, "rotation": 0},
+        "stella_star": {"x": 60, "y": 55, "scale": 0.65, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child if they've ever had to say goodbye to someone they care about"
+    },
+    {
+      "id": "resolution",
+      "act": 3,
+      "scene": "starry_sky_final",
+      "characters_present": ["ember_dragon"],
+      "narration_guide": "Ember watches from her mountain peak as Stella rises into the sky and takes her place among the stars — shining golden and bright, the most beautiful star in the sky. Ember's heart aches, but it's a warm ache, not a cold one. She's not lonely anymore, because now when she looks up at the night sky, she sees a friend. And the next morning, she opens her cave to the valley below and invites the forest creatures to visit. Bramble, River, Zephyr — they all come. Because Ember learned the most important lesson of all: the cure for loneliness isn't holding on to one star. It's opening your heart to the whole sky. At least 7-8 beautiful, resonant sentences for a memorable ending.",
+      "initial_positions": {
+        "ember_dragon": {"x": 50, "y": 65, "scale": 1.4, "rotation": 0}
+      },
+      "interaction_hint": "Ask the child what the story taught them about friendship and letting go"
+    }
+  ]
+}

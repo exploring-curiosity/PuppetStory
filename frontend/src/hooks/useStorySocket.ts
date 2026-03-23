@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import type { SceneData } from '../components/StoryStage';
+import type { SetSceneData } from '../engine/SceneManager';
+import type { ActionSequence } from '../engine/KeyframeEngine';
 
 export interface Transcript {
   role: 'narrator' | 'user';
@@ -9,73 +10,72 @@ export interface Transcript {
 
 type AudioCallback = (data: ArrayBuffer) => void;
 type TurnCompleteCallback = () => void;
+type SetSceneCallback = (data: SetSceneData) => void;
+type ActionSequenceCallback = (data: ActionSequence) => void;
 
 interface UseStorySocketReturn {
   connected: boolean;
-  scene: SceneData | null;
   transcripts: Transcript[];
-  connect: () => void;
+  connect: (storyId: string) => void;
   disconnect: () => void;
   sendAudio: (data: ArrayBuffer) => void;
   sendText: (text: string) => void;
   sendWindDown: () => void;
   setOnAudio: (cb: AudioCallback) => void;
   setOnTurnComplete: (cb: TurnCompleteCallback) => void;
+  setOnSetScene: (cb: SetSceneCallback) => void;
+  setOnActionSequence: (cb: ActionSequenceCallback) => void;
 }
 
 export function useStorySocket(): UseStorySocketReturn {
   const wsRef = useRef<WebSocket | null>(null);
   const [connected, setConnected] = useState(false);
-  const [scene, setScene] = useState<SceneData | null>(null);
   const [transcripts, setTranscripts] = useState<Transcript[]>([]);
   const onAudioRef = useRef<AudioCallback | null>(null);
   const onTurnCompleteRef = useRef<TurnCompleteCallback | null>(null);
+  const onSetSceneRef = useRef<SetSceneCallback | null>(null);
+  const onActionSequenceRef = useRef<ActionSequenceCallback | null>(null);
 
-  const setOnAudio = useCallback((cb: AudioCallback) => {
-    onAudioRef.current = cb;
-  }, []);
+  const setOnAudio = useCallback((cb: AudioCallback) => { onAudioRef.current = cb; }, []);
+  const setOnTurnComplete = useCallback((cb: TurnCompleteCallback) => { onTurnCompleteRef.current = cb; }, []);
+  const setOnSetScene = useCallback((cb: SetSceneCallback) => { onSetSceneRef.current = cb; }, []);
+  const setOnActionSequence = useCallback((cb: ActionSequenceCallback) => { onActionSequenceRef.current = cb; }, []);
 
-  const setOnTurnComplete = useCallback((cb: TurnCompleteCallback) => {
-    onTurnCompleteRef.current = cb;
-  }, []);
-
-  const connect = useCallback(() => {
+  const connect = useCallback((storyId: string) => {
     if (wsRef.current) return;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.host}/ws/story`;
-    console.log('[WS] Connecting to', wsUrl);
+    console.log('[WS] Connecting to', wsUrl, 'with story:', storyId);
 
     const ws = new WebSocket(wsUrl);
     ws.binaryType = 'arraybuffer';
     wsRef.current = ws;
 
     ws.onopen = () => {
-      console.log('[WS] Connected');
+      console.log('[WS] Connected, sending init');
+      // Send init message with story_id
+      ws.send(JSON.stringify({ type: 'init', story_id: storyId }));
       setConnected(true);
     };
 
     ws.onmessage = (event) => {
       if (event.data instanceof ArrayBuffer) {
-        // Stream audio directly to the playback callback — no state accumulation
         onAudioRef.current?.(event.data);
       } else {
         try {
           const msg = JSON.parse(event.data);
-          if (msg.type === 'scene') {
-            console.log('[WS] Scene received:', msg.data?.scene_title);
-            setScene(msg.data);
+
+          if (msg.type === 'set_scene') {
+            console.log('[WS] set_scene:', msg.data?.background_id);
+            onSetSceneRef.current?.(msg.data);
+          } else if (msg.type === 'action_sequence') {
+            console.log('[WS] action_sequence:', Object.keys(msg.data?.puppets || {}));
+            onActionSequenceRef.current?.(msg.data);
           } else if (msg.type === 'transcript') {
-            setTranscripts((prev) => [
-              ...prev,
-              { role: msg.role, text: msg.text, ts: Date.now() },
-            ]);
+            setTranscripts(prev => [...prev, { role: msg.role, text: msg.text, ts: Date.now() }]);
           } else if (msg.type === 'narration_text') {
-            // Also add narration text to transcript (it's already spoken by browser TTS or audio)
-            setTranscripts((prev) => [
-              ...prev,
-              { role: 'narrator', text: msg.text, ts: Date.now() },
-            ]);
+            setTranscripts(prev => [...prev, { role: 'narrator', text: msg.text, ts: Date.now() }]);
           } else if (msg.type === 'turn_complete') {
             console.log('[WS] Turn complete');
             onTurnCompleteRef.current?.();
@@ -126,14 +126,11 @@ export function useStorySocket(): UseStorySocketReturn {
   }, []);
 
   useEffect(() => {
-    return () => {
-      wsRef.current?.close();
-    };
+    return () => { wsRef.current?.close(); };
   }, []);
 
   return {
     connected,
-    scene,
     transcripts,
     connect,
     disconnect,
@@ -142,5 +139,7 @@ export function useStorySocket(): UseStorySocketReturn {
     sendWindDown,
     setOnAudio,
     setOnTurnComplete,
+    setOnSetScene,
+    setOnActionSequence,
   };
 }
