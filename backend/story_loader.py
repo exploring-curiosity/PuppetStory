@@ -3,7 +3,6 @@ Story loader — reads and validates story JSON files from the stories/ director
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Optional
 
