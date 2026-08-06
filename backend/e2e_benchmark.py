@@ -118,7 +118,7 @@ class InterruptionResult:
             grade = "✅" if self.audio_resume_t < 3 else "⚠️" if self.audio_resume_t < 6 else "❌"
             lines.append(f"    {grade} Audio resume:    {self.audio_resume_t:.3f}s")
         else:
-            lines.append(f"    ❌ Audio resume:    NO RESPONSE")
+            lines.append("    ❌ Audio resume:    NO RESPONSE")
         if self.scene_update_t is not None:
             grade = "✅" if self.scene_update_t < 5 else "⚠️" if self.scene_update_t < 10 else "❌"
             bg = self.scene_data.get("background_id", "?") if self.scene_data else "?"
