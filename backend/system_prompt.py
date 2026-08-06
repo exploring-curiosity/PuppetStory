@@ -20,8 +20,10 @@ def _build_story_context(story: dict) -> str:
         "",
         "### Characters (these have pre-generated images — use their exact IDs)",
     ]
-    for c in story.get("characters", []):
-        lines.append(f"- **{c['id']}** — \"{c['name']}\": {c['description']} (scale_factor={c.get('scale_factor', 1.0)})")
+    lines.extend(
+        f"- **{c['id']}** — \"{c['name']}\": {c['description']} (scale_factor={c.get('scale_factor', 1.0)})"
+        for c in story.get("characters", [])
+    )
 
     lines.append("")
     lines.append("### Backgrounds (use these exact IDs in set_scene)")
