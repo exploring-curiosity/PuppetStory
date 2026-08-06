@@ -78,8 +78,12 @@ async def generate_story_assets(story_id: str):
     pipeline = AssetPipeline(api_key, fast_mode=FAST_MODE)
 
     async def event_stream():
-        async for event in pipeline.generate_story_assets(story):
-            yield f"data: {json.dumps(event)}\n\n"
+        try:
+            async for event in pipeline.generate_story_assets(story):
+                yield f"data: {json.dumps(event)}\n\n"
+        except (asyncio.CancelledError, GeneratorExit):
+            print("[Server] Client disconnected during asset generation")
+            raise
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
