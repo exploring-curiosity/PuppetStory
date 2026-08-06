@@ -132,13 +132,21 @@ class AssetPipeline:
         """Generate a single image using Nano Banana 2."""
         cache_dir = self.get_story_cache_dir(story_id)
 
-        response = self.client.models.generate_content(
-            model=IMAGE_MODEL,
-            contents=[prompt],
-            config=types.GenerateContentConfig(
-                response_modalities=["IMAGE", "TEXT"],
-            ),
-        )
+        for attempt in range(3):
+            try:
+                response = self.client.models.generate_content(
+                    model=IMAGE_MODEL,
+                    contents=[prompt],
+                    config=types.GenerateContentConfig(
+                        response_modalities=["IMAGE", "TEXT"],
+                    ),
+                )
+                break
+            except Exception:
+                if attempt < 2:
+                    await asyncio.sleep(1 * (2 ** attempt))
+                else:
+                    raise
 
         for part in response.candidates[0].content.parts:
             if part.inline_data is not None:
@@ -156,11 +164,19 @@ class AssetPipeline:
         from image_generator import _svg_puppet, _svg_background, _clean_svg
         cache_dir = self.get_story_cache_dir(story_id)
 
-        is_bg = fmt == "jpg"
-        if is_bg:
-            svg = _clean_svg(_svg_background(element_id, prompt))
-        else:
-            svg = _clean_svg(_svg_puppet(element_id, prompt))
+        for attempt in range(3):
+            try:
+                is_bg = fmt == "jpg"
+                if is_bg:
+                    svg = _clean_svg(_svg_background(element_id, prompt))
+                else:
+                    svg = _clean_svg(_svg_puppet(element_id, prompt))
+                break
+            except Exception:
+                if attempt < 2:
+                    await asyncio.sleep(1 * (2 ** attempt))
+                else:
+                    raise
 
         out_path = cache_dir / f"{element_id}.svg"
         out_path.write_text(svg)
