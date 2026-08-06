@@ -70,6 +70,8 @@ async def get_story(story_id: str):
 async def get_story_assets(story_id: str):
     """Return all cached asset data URIs for a story."""
     api_key = GOOGLE_API_KEY or ""
+    if not api_key:
+        return {"error": "GOOGLE_API_KEY not set"}, 401
     story = load_story(story_id)
     if story is None:
         return {"error": "Story not found"}, 404
