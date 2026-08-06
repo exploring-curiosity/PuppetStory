@@ -140,6 +140,9 @@ class AssetPipeline:
             ),
         )
 
+        if not response.candidates:
+            raise RuntimeError(f"No candidates in response for {element_id}")
+
         for part in response.candidates[0].content.parts:
             if part.inline_data is not None:
                 img_bytes = part.inline_data.data
