@@ -27,9 +27,10 @@ class AssetPipeline:
         self.client = genai.Client(api_key=api_key)
         self.fast_mode = fast_mode
 
-    def get_story_cache_dir(self, story_id: str) -> Path:
+    def get_story_cache_dir(self, story_id: str, create: bool = False) -> Path:
         d = CACHE_DIR / story_id
-        d.mkdir(parents=True, exist_ok=True)
+        if create:
+            d.mkdir(parents=True, exist_ok=True)
         return d
 
     def is_cached(self, story_id: str, element_id: str) -> bool:
@@ -130,15 +131,26 @@ class AssetPipeline:
 
     async def _generate_image(self, story_id: str, element_id: str, prompt: str, fmt: str):
         """Generate a single image using Nano Banana 2."""
-        cache_dir = self.get_story_cache_dir(story_id)
+        cache_dir = self.get_story_cache_dir(story_id, create=True)
 
-        response = self.client.models.generate_content(
-            model=IMAGE_MODEL,
-            contents=[prompt],
-            config=types.GenerateContentConfig(
-                response_modalities=["IMAGE", "TEXT"],
-            ),
-        )
+        for attempt in range(4):
+            try:
+                response = self.client.models.generate_content(
+                    model=IMAGE_MODEL,
+                    contents=[prompt],
+                    config=types.GenerateContentConfig(
+                        response_modalities=["IMAGE", "TEXT"],
+                    ),
+                )
+                break
+            except Exception:
+                if attempt < 3:
+                    await asyncio.sleep(1 * (2 ** attempt))
+                else:
+                    raise
+
+        if not response.candidates:
+            raise RuntimeError(f"No candidates in response for {element_id}")
 
         for part in response.candidates[0].content.parts:
             if part.inline_data is not None:
@@ -154,13 +166,21 @@ class AssetPipeline:
     async def _generate_placeholder(self, story_id: str, element_id: str, prompt: str, fmt: str):
         """Generate a colored placeholder (fast mode, no API calls)."""
         from image_generator import _svg_puppet, _svg_background, _clean_svg
-        cache_dir = self.get_story_cache_dir(story_id)
+        cache_dir = self.get_story_cache_dir(story_id, create=True)
 
-        is_bg = fmt == "jpg"
-        if is_bg:
-            svg = _clean_svg(_svg_background(element_id, prompt))
-        else:
-            svg = _clean_svg(_svg_puppet(element_id, prompt))
+        for attempt in range(4):
+            try:
+                is_bg = fmt == "jpg"
+                if is_bg:
+                    svg = _clean_svg(_svg_background(element_id, prompt))
+                else:
+                    svg = _clean_svg(_svg_puppet(element_id, prompt))
+                break
+            except Exception:
+                if attempt < 3:
+                    await asyncio.sleep(1 * (2 ** attempt))
+                else:
+                    raise
 
         out_path = cache_dir / f"{element_id}.svg"
         out_path.write_text(svg)

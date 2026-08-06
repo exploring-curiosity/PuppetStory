@@ -6,7 +6,7 @@ import time
 import traceback
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
@@ -28,12 +28,26 @@ app.add_middleware(
 )
 
 FAST_MODE = os.getenv("FAST_MODE", "").lower() in ("1", "true", "yes")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 
 # ─── REST endpoints ─────────────────────────────────────────────────────
 
 @app.get("/health")
-async def health():
+async def health(check_api: bool = Query(False, description="Validate API connectivity")):
+    if check_api:
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            return {"status": "error", "message": "GOOGLE_API_KEY not set"}, 500
+        try:
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            await client.models.generate_content(
+                model="gemini-2.5-flash", contents="Hi"
+            )
+            return {"status": "ok", "service": "puppet-story", "api": "connected"}
+        except Exception as e:
+            return {"status": "error", "message": f"API connectivity check failed: {e}"}, 503
     return {"status": "ok", "service": "puppet-story"}
 
 
@@ -55,7 +69,7 @@ async def get_story(story_id: str):
 @app.get("/api/stories/{story_id}/assets")
 async def get_story_assets(story_id: str):
     """Return all cached asset data URIs for a story."""
-    api_key = os.getenv("GOOGLE_API_KEY", "")
+    api_key = GOOGLE_API_KEY or ""
     if not api_key:
         return {"error": "GOOGLE_API_KEY not set"}, 401
     story = load_story(story_id)
@@ -69,7 +83,7 @@ async def get_story_assets(story_id: str):
 @app.post("/api/stories/{story_id}/generate-assets")
 async def generate_story_assets(story_id: str):
     """Generate all images for a story. Returns Server-Sent Events with progress."""
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = GOOGLE_API_KEY
     if not api_key:
         return {"error": "GOOGLE_API_KEY not set"}, 500
 
@@ -80,8 +94,12 @@ async def generate_story_assets(story_id: str):
     pipeline = AssetPipeline(api_key, fast_mode=FAST_MODE)
 
     async def event_stream():
-        async for event in pipeline.generate_story_assets(story):
-            yield f"data: {json.dumps(event)}\n\n"
+        try:
+            async for event in pipeline.generate_story_assets(story):
+                yield f"data: {json.dumps(event)}\n\n"
+        except (asyncio.CancelledError, GeneratorExit):
+            print("[Server] Client disconnected during asset generation")
+            raise
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
@@ -93,7 +111,7 @@ async def story_websocket(ws: WebSocket):
     await ws.accept()
     print("[Server] WebSocket client connected")
 
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = GOOGLE_API_KEY
     if not api_key:
         await ws.send_json({"type": "error", "message": "GOOGLE_API_KEY not set"})
         await ws.close()
@@ -334,9 +352,7 @@ async def story_websocket(ws: WebSocket):
             child_req = _pending_child_text[:80]
             print(f"[{_ts()}] Tool-call nudge for child input: {child_req}")
             await _live_ref.send_text(
-                f'Now update the puppet stage for the child\'s request: "{child_req}". '
-                f'Call set_scene to set the right background/mood/character positions, '
-                f'and call action_sequence to animate the characters. Then continue narrating.'
+                f'Now update the puppet stage for the child\'s request: "{child_req}". Call set_scene to set the right background/mood/character positions, and call action_sequence to animate the characters. Then continue narrating.'  # noqa: S608
             )
         else:
             print(f"[{_ts()}] Auto-continue after TURN_COMPLETE")
@@ -463,4 +479,4 @@ async def story_websocket(ws: WebSocket):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True)

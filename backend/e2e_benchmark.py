@@ -20,6 +20,7 @@ We measure from the moment child text is sent to:
 """
 
 import asyncio
+import contextlib
 import json
 import os
 import sys
@@ -71,6 +72,16 @@ for arg in sys.argv[1:]:
         STORY_ID = arg.split("=", 1)[1]
     elif arg.startswith("--duration="):
         MAX_DURATION = int(arg.split("=", 1)[1])
+
+
+# ─── Helpers ─────────────────────────────────────────────────────────────
+
+def _safe_json_loads(msg: str) -> dict | None:
+    """Parse JSON, returning None on failure (avoids try-except in loops)."""
+    try:
+        return json.loads(msg)
+    except json.JSONDecodeError:
+        return None
 
 
 # ─── Interruption Result Tracker ─────────────────────────────────────────
@@ -419,13 +430,9 @@ async def run_benchmark():
                     if not audio_started.is_set():
                         audio_started.set()
                 else:
-                    try:
-                        data = json.loads(msg)
-                        if results.handle_message(data):
-                            break
-                    except json.JSONDecodeError:
-                        pass
-
+                    data = _safe_json_loads(msg)
+                    if data is not None and results.handle_message(data):
+                        break
         except KeyboardInterrupt:
             results.log("INTERRUPTED_BY_USER")
         finally:
@@ -433,10 +440,8 @@ async def run_benchmark():
             interruption_task.cancel()
             timeout_task.cancel()
             for task in [interruption_task, timeout_task]:
-                try:
+                with contextlib.suppress(asyncio.CancelledError, Exception):
                     await task
-                except (asyncio.CancelledError, Exception):
-                    pass
 
     results.log("BENCHMARK_DONE")
     results.print_summary()

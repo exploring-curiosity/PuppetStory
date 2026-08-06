@@ -279,6 +279,8 @@ class LiveSession:
                 break
 
             try:
+                if not self.session:
+                    continue
                 if msg_type == "audio":
                     await self.session.send_realtime_input(
                         audio={"data": payload, "mime_type": "audio/pcm;rate=16000"}
@@ -324,13 +326,14 @@ class LiveSession:
                     else:
                         # Re-arm for a second attempt
                         self._watchdog_armed_at = time.time()
-                    try:
-                        await self.session.send_client_content(
-                            turns={"role": "user", "parts": [{"text": "Continue. Next beat now."}]},
-                            turn_complete=True
-                        )
-                    except Exception as e:
-                        print(f"[LiveSession] Watchdog nudge failed: {e}")
+                    if self.session:
+                        try:
+                            await self.session.send_client_content(
+                                turns={"role": "user", "parts": [{"text": "Continue. Next beat now."}]},
+                                turn_complete=True
+                            )
+                        except Exception as e:
+                            print(f"[LiveSession] Watchdog nudge failed: {e}")
             else:
                 _nudge_count = 0  # reset when not armed
 
@@ -338,6 +341,9 @@ class LiveSession:
         """Main receive loop dispatching to callbacks."""
         while self._running:
             try:
+                if not self.session:
+                    await asyncio.sleep(0.1)
+                    continue
                 turn = self.session.receive()
                 async for response in turn:
                     # Use response.data as the single source for audio

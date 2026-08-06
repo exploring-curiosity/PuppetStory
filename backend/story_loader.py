@@ -3,7 +3,6 @@ Story loader — reads and validates story JSON files from the stories/ director
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Optional
 
@@ -34,8 +33,11 @@ def list_stories() -> list[dict]:
 
 def load_story(story_id: str) -> Optional[dict]:
     """Load a full story by ID. Returns None if not found."""
-    path = STORIES_DIR / f"{story_id}.json"
+    path = (STORIES_DIR / f"{story_id}.json").resolve()
     if not path.exists():
+        return None
+    if not str(path).startswith(str(STORIES_DIR.resolve()) + os.sep):
+        print(f"[StoryLoader] Path traversal attempt blocked for {story_id}")
         return None
     try:
         with open(path, "r") as f:
