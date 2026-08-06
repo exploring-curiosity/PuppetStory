@@ -37,6 +37,7 @@ BACKEND_URL = "http://localhost:8000"
 WS_URL = "ws://localhost:8000/ws/story"
 STORY_ID = "three_little_pigs"
 MAX_DURATION = 180  # seconds — longer to allow all interruptions
+AUDIO_RESUME_FAST_THRESHOLD = 3  # seconds — fast audio resume threshold
 
 # Each interruption: (type, text, min_delay_after_prev_audio)
 # min_delay_after_prev_audio: wait this many seconds AFTER story audio starts
@@ -115,7 +116,7 @@ class InterruptionResult:
         lines.append(f"    Type: {self.type}")
         lines.append(f"    Text: \"{self.text[:70]}\"")
         if self.audio_resume_t is not None:
-            grade = "✅" if self.audio_resume_t < 3 else "⚠️" if self.audio_resume_t < 6 else "❌"
+            grade = "✅" if self.audio_resume_t < AUDIO_RESUME_FAST_THRESHOLD else "⚠️" if self.audio_resume_t < 6 else "❌"
             lines.append(f"    {grade} Audio resume:    {self.audio_resume_t:.3f}s")
         else:
             lines.append(f"    ❌ Audio resume:    NO RESPONSE")
