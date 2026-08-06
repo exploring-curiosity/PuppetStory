@@ -338,6 +338,9 @@ class LiveSession:
         """Main receive loop dispatching to callbacks."""
         while self._running:
             try:
+                if not self.session:
+                    await asyncio.sleep(0.1)
+                    continue
                 turn = self.session.receive()
                 async for response in turn:
                     # Use response.data as the single source for audio
