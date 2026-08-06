@@ -20,6 +20,7 @@ We measure from the moment child text is sent to:
 """
 
 import asyncio
+import contextlib
 import json
 import os
 import sys
@@ -433,10 +434,8 @@ async def run_benchmark():
             interruption_task.cancel()
             timeout_task.cancel()
             for task in [interruption_task, timeout_task]:
-                try:
+                with contextlib.suppress(asyncio.CancelledError, Exception):
                     await task
-                except (asyncio.CancelledError, Exception):
-                    pass
 
     results.log("BENCHMARK_DONE")
     results.print_summary()
