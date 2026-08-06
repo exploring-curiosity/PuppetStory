@@ -132,7 +132,7 @@ class AssetPipeline:
         """Generate a single image using Nano Banana 2."""
         cache_dir = self.get_story_cache_dir(story_id)
 
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 response = self.client.models.generate_content(
                     model=IMAGE_MODEL,
@@ -143,7 +143,7 @@ class AssetPipeline:
                 )
                 break
             except Exception:
-                if attempt < 2:
+                if attempt < 3:
                     await asyncio.sleep(1 * (2 ** attempt))
                 else:
                     raise
@@ -164,7 +164,7 @@ class AssetPipeline:
         from image_generator import _svg_puppet, _svg_background, _clean_svg
         cache_dir = self.get_story_cache_dir(story_id)
 
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 is_bg = fmt == "jpg"
                 if is_bg:
@@ -173,7 +173,7 @@ class AssetPipeline:
                     svg = _clean_svg(_svg_puppet(element_id, prompt))
                 break
             except Exception:
-                if attempt < 2:
+                if attempt < 3:
                     await asyncio.sleep(1 * (2 ** attempt))
                 else:
                     raise
