@@ -14,12 +14,10 @@ Run: python test_e2e.py
 import asyncio
 import json
 import os
+import wave
 import sys
 import time
-import wave
 from dotenv import load_dotenv
-
-import pytest
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
@@ -188,23 +186,13 @@ async def story_script(live: LiveSession):
     await live.stop()
 
 
-def _has_api_key():
-    """Check if GOOGLE_API_KEY is set."""
-    return os.getenv("GOOGLE_API_KEY") is not None
-
-
-@pytest.mark.skipif(
-    not _has_api_key(),
-    reason="GOOGLE_API_KEY not set in environment — requires Gemini Live API",
-)
-@pytest.mark.asyncio
-async def test_e2e_story_pipeline():
-    """End-to-end test: full story pipeline (requires GOOGLE_API_KEY)."""
+async def run_story_test():
     global session, image_generator
 
     api_key = os.getenv("GOOGLE_API_KEY")
     if not api_key:
-        pytest.skip("GOOGLE_API_KEY not set in .env")
+        print("❌ GOOGLE_API_KEY not set in .env")
+        sys.exit(1)
 
     session = LiveSession(api_key)
     image_generator = ImageGenerator(api_key)

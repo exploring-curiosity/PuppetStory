@@ -4,8 +4,11 @@ Simulates parent/child sending text prompts, verifies narration + scenes + image
 """
 import asyncio
 import json
+import os
 import time
 import websockets
+
+import pytest
 
 SCRIPT = [
     ("Hello Dream Weaver! My child wants a bedtime story tonight.", 12),
@@ -13,6 +16,27 @@ SCRIPT = [
     ("The dragon should blow RAINBOW BUBBLES instead of fire! And the bubbles make flowers grow!", 18),
     ("Can a little bunny come ride on the dragon?", 18),
 ]
+
+
+# Skip if the backend server is not running (integration test requires ws://localhost:8000)
+def _server_available():
+    """Check if the backend server is reachable."""
+    try:
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(2)
+        s.connect(("localhost", 8000))
+        s.close()
+        return True
+    except Exception:
+        return False
+
+
+@pytest.mark.skipif(
+    not _server_available(),
+    reason="Backend server not running at ws://localhost:8000",
+)
+@pytest.mark.asyncio
 
 
 async def test():
