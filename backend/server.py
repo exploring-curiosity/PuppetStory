@@ -332,9 +332,7 @@ async def story_websocket(ws: WebSocket):
             child_req = _pending_child_text[:80]
             print(f"[{_ts()}] Tool-call nudge for child input: {child_req}")
             await _live_ref.send_text(
-                f'Now update the puppet stage for the child\'s request: "{child_req}". '
-                f'Call set_scene to set the right background/mood/character positions, '
-                f'and call action_sequence to animate the characters. Then continue narrating.'
+                f'Now update the puppet stage for the child\'s request: "{child_req}". Call set_scene to set the right background/mood/character positions, and call action_sequence to animate the characters. Then continue narrating.'  # noqa: S608
             )
         else:
             print(f"[{_ts()}] Auto-continue after TURN_COMPLETE")
