@@ -279,6 +279,8 @@ class LiveSession:
                 break
 
             try:
+                if not self.session:
+                    continue
                 if msg_type == "audio":
                     await self.session.send_realtime_input(
                         audio={"data": payload, "mime_type": "audio/pcm;rate=16000"}
