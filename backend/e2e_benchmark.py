@@ -313,17 +313,19 @@ async def run_benchmark():
     # ─── Step 1: Generate assets ─────────────────────────────────────────
     print("\n📦 Step 1: Generating story assets...")
     t0 = time.monotonic()
-    async with aiohttp.ClientSession() as http:
-        async with http.post(f"{BACKEND_URL}/api/stories/{STORY_ID}/generate-assets") as resp:
-            async for line in resp.content:
-                text = line.decode().strip()
-                if text.startswith("data: "):
-                    evt = json.loads(text[6:])
-                    if evt.get("event") in ("progress", "cached"):
-                        sys.stdout.write(f"\r  Generating... {evt.get('done', '?')}/{evt.get('total', '?')} ")
-                        sys.stdout.flush()
-                    if evt.get("event") == "complete":
-                        break
+    async with (
+        aiohttp.ClientSession() as http,
+        http.post(f"{BACKEND_URL}/api/stories/{STORY_ID}/generate-assets") as resp,
+    ):
+        async for line in resp.content:
+            text = line.decode().strip()
+            if text.startswith("data: "):
+                evt = json.loads(text[6:])
+                if evt.get("event") in ("progress", "cached"):
+                    sys.stdout.write(f"\r  Generating... {evt.get('done', '?')}/{evt.get('total', '?')} ")
+                    sys.stdout.flush()
+                if evt.get("event") == "complete":
+                    break
     asset_time = time.monotonic() - t0
     print(f"\n  ✅ Assets ready in {asset_time:.3f}s")
     results.log("ASSETS_GENERATED", duration_s=round(asset_time, 3))
