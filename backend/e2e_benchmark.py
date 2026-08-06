@@ -74,6 +74,16 @@ for arg in sys.argv[1:]:
         MAX_DURATION = int(arg.split("=", 1)[1])
 
 
+# ─── Helpers ─────────────────────────────────────────────────────────────
+
+def _safe_json_loads(msg: str) -> dict | None:
+    """Parse JSON, returning None on failure (avoids try-except in loops)."""
+    try:
+        return json.loads(msg)
+    except json.JSONDecodeError:
+        return None
+
+
 # ─── Interruption Result Tracker ─────────────────────────────────────────
 
 class InterruptionResult:
@@ -420,13 +430,9 @@ async def run_benchmark():
                     if not audio_started.is_set():
                         audio_started.set()
                 else:
-                    try:
-                        data = json.loads(msg)
-                        if results.handle_message(data):
-                            break
-                    except json.JSONDecodeError:
-                        pass
-
+                    data = _safe_json_loads(msg)
+                    if data is not None and results.handle_message(data):
+                        break
         except KeyboardInterrupt:
             results.log("INTERRUPTED_BY_USER")
         finally:
