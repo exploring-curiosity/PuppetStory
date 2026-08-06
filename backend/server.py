@@ -6,7 +6,7 @@ import time
 import traceback
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
@@ -34,7 +34,20 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # ─── REST endpoints ─────────────────────────────────────────────────────
 
 @app.get("/health")
-async def health():
+async def health(check_api: bool = Query(False, description="Validate API connectivity")):
+    if check_api:
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            return {"status": "error", "message": "GOOGLE_API_KEY not set"}, 500
+        try:
+            from google import genai
+            client = genai.Client(api_key=api_key)
+            await client.models.generate_content(
+                model="gemini-2.5-flash", contents="Hi"
+            )
+            return {"status": "ok", "service": "puppet-story", "api": "connected"}
+        except Exception as e:
+            return {"status": "error", "message": f"API connectivity check failed: {e}"}, 503
     return {"status": "ok", "service": "puppet-story"}
 
 
