@@ -324,13 +324,14 @@ class LiveSession:
                     else:
                         # Re-arm for a second attempt
                         self._watchdog_armed_at = time.time()
-                    try:
-                        await self.session.send_client_content(
-                            turns={"role": "user", "parts": [{"text": "Continue. Next beat now."}]},
-                            turn_complete=True
-                        )
-                    except Exception as e:
-                        print(f"[LiveSession] Watchdog nudge failed: {e}")
+                    if self.session:
+                        try:
+                            await self.session.send_client_content(
+                                turns={"role": "user", "parts": [{"text": "Continue. Next beat now."}]},
+                                turn_complete=True
+                            )
+                        except Exception as e:
+                            print(f"[LiveSession] Watchdog nudge failed: {e}")
             else:
                 _nudge_count = 0  # reset when not armed
 
