@@ -28,6 +28,7 @@ app.add_middleware(
 )
 
 FAST_MODE = os.getenv("FAST_MODE", "").lower() in ("1", "true", "yes")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 
 # ─── REST endpoints ─────────────────────────────────────────────────────
@@ -55,7 +56,7 @@ async def get_story(story_id: str):
 @app.get("/api/stories/{story_id}/assets")
 async def get_story_assets(story_id: str):
     """Return all cached asset data URIs for a story."""
-    api_key = os.getenv("GOOGLE_API_KEY", "")
+    api_key = GOOGLE_API_KEY or ""
     story = load_story(story_id)
     if story is None:
         return {"error": "Story not found"}, 404
@@ -67,7 +68,7 @@ async def get_story_assets(story_id: str):
 @app.post("/api/stories/{story_id}/generate-assets")
 async def generate_story_assets(story_id: str):
     """Generate all images for a story. Returns Server-Sent Events with progress."""
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = GOOGLE_API_KEY
     if not api_key:
         return {"error": "GOOGLE_API_KEY not set"}, 500
 
@@ -91,7 +92,7 @@ async def story_websocket(ws: WebSocket):
     await ws.accept()
     print("[Server] WebSocket client connected")
 
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = GOOGLE_API_KEY
     if not api_key:
         await ws.send_json({"type": "error", "message": "GOOGLE_API_KEY not set"})
         await ws.close()
