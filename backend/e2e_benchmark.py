@@ -231,6 +231,26 @@ class BenchmarkResults:
         if role == "narrator" and self._active_interruption and self._active_interruption.send_time:
             self._active_interruption.add_narration(text)
 
+    def handle_message(self, data: dict) -> bool:
+        """Dispatch a parsed JSON message. Returns True if the connection should break."""
+        mtype = data.get("type")
+        if mtype == "set_scene":
+            self.on_set_scene(data.get("data", {}))
+        elif mtype == "action_sequence":
+            self.on_action_sequence(data.get("data", {}))
+        elif mtype == "transcript":
+            self.on_transcript(data.get("role", "?"), data.get("text", ""))
+        elif mtype == "narration_text":
+            self.on_transcript("narrator", data.get("text", ""))
+        elif mtype == "thinking":
+            self.log("THINKING", text=data.get("text", "")[:40])
+        elif mtype == "turn_complete":
+            self.log("TURN_COMPLETE")
+        elif mtype == "error":
+            self.log("SERVER_ERROR", msg=data.get("message"))
+            return True
+        return False
+
     def print_summary(self):
         dur = self.elapsed()
         print("\n" + "═" * 72)
@@ -399,21 +419,7 @@ async def run_benchmark():
                 else:
                     try:
                         data = json.loads(msg)
-                        mtype = data.get("type")
-                        if mtype == "set_scene":
-                            results.on_set_scene(data.get("data", {}))
-                        elif mtype == "action_sequence":
-                            results.on_action_sequence(data.get("data", {}))
-                        elif mtype == "transcript":
-                            results.on_transcript(data.get("role", "?"), data.get("text", ""))
-                        elif mtype == "narration_text":
-                            results.on_transcript("narrator", data.get("text", ""))
-                        elif mtype == "thinking":
-                            results.log("THINKING", text=data.get("text", "")[:40])
-                        elif mtype == "turn_complete":
-                            results.log("TURN_COMPLETE")
-                        elif mtype == "error":
-                            results.log("SERVER_ERROR", msg=data.get("message"))
+                        if results.handle_message(data):
                             break
                     except json.JSONDecodeError:
                         pass
