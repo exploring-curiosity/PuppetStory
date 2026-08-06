@@ -435,8 +435,8 @@ async def run_benchmark():
             for task in [interruption_task, timeout_task]:
                 try:
                     await task
-                except (asyncio.CancelledError, Exception):
-                    pass
+                except (asyncio.CancelledError, Exception) as exc:
+                    results.log("TASK_CANCELLED", error=str(exc))
 
     results.log("BENCHMARK_DONE")
     results.print_summary()
