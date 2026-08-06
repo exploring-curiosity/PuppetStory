@@ -122,6 +122,9 @@ async def infer_puppet_commands(
         )
 
         elapsed = time.monotonic() - t0
+        if response.text is None:
+            print("[PuppetInference] Response text is None (possibly content-filtered)")
+            return None
         raw = response.text.strip()
         
         # Strip markdown code fences if present
