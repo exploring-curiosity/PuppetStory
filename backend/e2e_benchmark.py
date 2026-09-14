@@ -25,7 +25,6 @@ import json
 import os
 import sys
 import time
-import traceback
 
 import websockets
 from dotenv import load_dotenv
